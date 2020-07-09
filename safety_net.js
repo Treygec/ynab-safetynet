@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         True Safey Net with emoji
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.3
 // @description  try to take over the world!
 // @author       You
 // @match        https://app.youneedabudget.com/*
@@ -19,6 +19,7 @@
         let safetyNetCategories = document.querySelectorAll('*[title^="🦺"]');
         let safetyNetRows = []
 
+
         for(let i=0; i < safetyNetCategories.length; i++) {
             safetyNetRows.push(safetyNetCategories[i].closest(".budget-table-row"))}
 
@@ -26,7 +27,9 @@
             total += parseFloat(safetyNetRows[i].getElementsByClassName("budget-table-cell-available")[0].textContent.replace("$","").replace(",","").trim())}
 
 
-        let invested_but_accessible = parseFloat(document.querySelector('[class="nav-account offBudget ember-view"]').firstElementChild.lastElementChild.textContent.replace("$","").replace(",",""))
+        let invested_but_accessible = parseFloat(document.querySelector('[class="nav-account offBudget ember-view"]').firstElementChild.lastElementChild.previousElementSibling.textContent.replace("$","").replace(",",""))
+        console.log(invested_but_accessible)
+        console.log(total)
 
         total += invested_but_accessible
 
