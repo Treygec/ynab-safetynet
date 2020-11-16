@@ -5,19 +5,18 @@
 // @description  try to take over the world!
 // @author       You
 // @match        https://app.youneedabudget.com/*
-// @grant        GM_getValue
-// @run-at       document-idle
 // ==/UserScript==
 
 //4 parentElements for Categories, 3 for sub-categories
-
 (function() {
     'use strict';
 
     window.setTimeout(() =>{
         let total = 0;
-        let safetyNetCategories = document.querySelectorAll('*[title^="🦺"]');
+        let safetyNetCategories = document.querySelector(".budget-table-container").querySelectorAll('*[title^="🦺"]');
         let safetyNetRows = []
+        let investedSafetyNet = document.querySelector('[class="nav-account offBudget ember-view"]').querySelectorAll('*[title^="🦺"]')
+
 
 
         for(let i=0; i < safetyNetCategories.length; i++) {
@@ -26,12 +25,7 @@
         for(let i=0; i < safetyNetRows.length; i++) {
             total += parseFloat(safetyNetRows[i].getElementsByClassName("budget-table-cell-available")[0].textContent.replace("$","").replace(",","").trim())}
 
-
-        let invested_but_accessible = parseFloat(document.querySelector('[class="nav-account offBudget ember-view"]').firstElementChild.lastElementChild.previousElementSibling.textContent.replace("$","").replace(",",""))
-        console.log(invested_but_accessible)
-        console.log(total)
-
-        total += invested_but_accessible
+        investedSafetyNet.forEach(item => total += parseFloat(item.closest(".nav-account-row").querySelector('.nav-account-value').textContent.replace("$","").replace(",","")))
 
         let heading = document.createElement("H3");
         let title = document.createTextNode("REAL SAFETY NET");
@@ -54,5 +48,6 @@
         headingSpan.prepend(bdi);
         subHeading.appendChild(headingSpan);
         parentElement.insertBefore(subHeading, parentElement.childNodes[27])
+
     }, 10000)
 }());
